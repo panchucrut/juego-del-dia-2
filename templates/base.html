@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Juego del Día ⚽{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  {% block head %}{% endblock %}
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="{{ url_for('jugar') }}">⚽ Juego del Día</a>
+    <nav>
+      {% if current_player %}
+        <a href="{{ url_for('jugar') }}">Jugar</a>
+        <a href="{{ url_for('grupos') }}">Grupos</a>
+        <a href="{{ url_for('ranking') }}">Ranking</a>
+        <a href="{{ url_for('apuestas') }}">Apuestas</a>
+        <a href="{{ url_for('reglas') }}">Reglas</a>
+        <span class="whoami">👤 {{ current_player.name }}</span>
+        <a class="ghost" href="{{ url_for('logout') }}">Salir</a>
+      {% else %}
+        <a href="{{ url_for('reglas') }}">Reglas</a>
+      {% endif %}
+    </nav>
+  </header>
+
+  <main class="container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for cat, msg in messages %}
+        <div class="flash {{ cat }}">{{ msg }}</div>
+      {% endfor %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="foot">
+    {% if is_admin %}
+      <a href="{{ url_for('admin') }}">🛠️ Panel organizador</a> ·
+      <a href="{{ url_for('admin_logout') }}">cerrar organizador</a>
+    {% else %}
+      <a class="muted" href="{{ url_for('admin_login') }}">organizador</a>
+    {% endif %}
+  </footer>
+</body>
+</html>

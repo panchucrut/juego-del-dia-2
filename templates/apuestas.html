@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}Apuestas de todos · Juego del Día{% endblock %}
+{% block content %}
+
+<h1 class="day-title">👀 Apuestas de todos</h1>
+<p class="muted center">Mira qué apostó cada uno. Las apuestas de un partido se revelan
+   cuando el partido <b>empieza</b> 🔒 — antes están ocultas para que nadie copie.</p>
+
+<div class="daybar">
+  {% for f in fechas %}
+    <a class="chip {% if f == fecha %}active{% endif %}{% if f < hoy %} past{% endif %}"
+       href="{{ url_for('apuestas', fecha=f.isoformat()) }}">{{ f.day }}/{{ f.month }}</a>
+  {% endfor %}
+</div>
+
+{% if not cols %}
+  <div class="card center"><p class="muted">No hay partidos este día.</p></div>
+{% else %}
+  <p class="center"><b>{{ fecha | fecha_larga }}</b></p>
+  <div class="card table-scroll">
+    <table class="rank grid">
+      <thead>
+        <tr>
+          <th class="sticky-col">Jugador</th>
+          {% for c in cols %}
+            <th>
+              {{ c.m.home_team }}<br><small class="muted">vs</small><br>{{ c.m.away_team }}<br>
+              {% if c.m.finished %}<span class="badge done">{{ c.m.home_score }}-{{ c.m.away_score }}</span>
+              {% elif c.locked %}<span class="badge live">🔒 jugando</span>
+              {% else %}<span class="badge open">{{ c.m.kickoff.strftime('%H:%M') }}</span>{% endif %}
+            </th>
+          {% endfor %}
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in grid %}
+          <tr class="{% if row.me %}me{% endif %}">
+            <td class="sticky-col"><span class="pcolor" style="background: {{ row.color }}"></span>{{ row.name }}{% if row.me %} <small>(tú)</small>{% endif %}</td>
+            {% for cell in row.cells %}
+              <td class="num">
+                {% if cell.shown %}
+                  <span class="{% if cell.default %}muted{% endif %}">{{ cell.pred }}</span>
+                  {% if cell.pts is not none %}
+                    <br><small class="pts-mini p{{ cell.pts }}">+{{ cell.pts }}</small>
+                  {% endif %}
+                {% else %}<span class="muted">🔒</span>{% endif %}
+              </td>
+            {% endfor %}
+          </tr>
+        {% else %}
+          <tr><td class="muted center" colspan="{{ cols|length + 1 }}">Sin jugadores aún.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <p class="muted center">Si alguien no apostó, cuenta como <b>0-0</b> (se ve en gris).</p>
+{% endif %}
+{% endblock %}

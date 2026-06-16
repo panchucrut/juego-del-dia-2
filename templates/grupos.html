@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Grupos · Juego del Día{% endblock %}
+
+{% macro tabla(rows) %}
+<table class="rank gtable">
+  <thead><tr><th></th><th>Equipo</th><th>PJ</th><th>DG</th><th>Pts</th></tr></thead>
+  <tbody>
+    {% for r in rows %}
+      <tr class="{% if loop.index <= 2 %}adv{% endif %}">
+        <td class="pos">{{ loop.index }}</td>
+        <td class="gt-team"><span title="{{ r.team }}">{{ r.team }}</span></td>
+        <td class="num">{{ r.pj }}</td>
+        <td class="num">{{ '%+d' % r.dg }}</td>
+        <td class="num pts-col">{{ r.pts }}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endmacro %}
+
+{% block content %}
+<h1 class="day-title">📊 Grupos</h1>
+<p class="muted center">A la izquierda, cómo quedarían los grupos si se cumplieran
+   <b>tus apuestas</b>. A la derecha, cómo van <b>de verdad</b>.<br>
+   Los <b style="color:#34d399">2 primeros 🟢</b> de cada grupo pasan de ronda.</p>
+
+{% for grp in groups %}
+  <div class="card group-card">
+    <h2 class="group-title">Grupo {{ grp.letter }}
+      <small class="muted">({{ grp.jugados }}/{{ grp.total }} jugados)</small></h2>
+    <div class="group-cols">
+      <div class="gcol">
+        <div class="gcol-h pred">🔮 Según tus apuestas</div>
+        {{ tabla(grp.pred) }}
+      </div>
+      <div class="gcol">
+        <div class="gcol-h real">✅ Cómo va de verdad</div>
+        {{ tabla(grp.real) }}
+      </div>
+    </div>
+  </div>
+{% else %}
+  <div class="card center"><p class="muted">Todavía no hay partidos cargados.</p></div>
+{% endfor %}
+{% endblock %}

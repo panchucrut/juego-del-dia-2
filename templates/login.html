@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Entrar · Juego del Día{% endblock %}
+{% block content %}
+<div class="card hero">
+  <h1>⚽ Juego del Día</h1>
+  <p class="big">¡Adivina los marcadores y gana el día! 🏆</p>
+
+  <form method="post" class="login-form">
+    <label for="name">Tu nombre</label>
+    <input id="name" name="name" maxlength="40" placeholder="Tu nombre"
+           autocomplete="off" required autofocus>
+    <label for="secret">Tu número secreto 🔒</label>
+    <input id="secret" name="secret" type="password" inputmode="numeric"
+           placeholder="Ej: 1234" autocomplete="off" required>
+    <button class="btn primary big" type="submit">Entrar 🎮</button>
+  </form>
+
+  <p class="muted center">
+    <b>Primera vez:</b> elige tu nombre y un número secreto — quedan guardados.<br>
+    Después entras con los mismos. ¡No le compartas tu número secreto a nadie!
+  </p>
+  {% if not registration_open %}
+    <p class="muted center">La inscripción está cerrada 🔒</p>
+  {% endif %}
+  <p class="center"><a href="{{ url_for('reglas') }}">📖 ¿Cómo se juega?</a></p>
+</div>
+{% endblock %}

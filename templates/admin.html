@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+{% block title %}Panel · Organizador{% endblock %}
+{% block content %}
+
+<h1 class="day-title">🛠️ Panel del organizador</h1>
+<p class="muted center">{{ players|length }}/15 jugadores ·
+  {% if players %}{{ players | map(attribute='name') | join(', ') }}{% else %}sin jugadores aún{% endif %}</p>
+
+<div class="card center">
+  <form method="post" action="{{ url_for('admin_actualizar') }}">
+    <button class="btn primary big" type="submit">🔄 Actualizar resultados ahora</button>
+  </form>
+  <p class="hint">Busca online (ESPN) los marcadores finales de los partidos ya terminados
+     y los carga al toque. (También se cargan solos cada hora.)</p>
+</div>
+
+<div class="card">
+  <h2>🧑‍🤝‍🧑 Inscripción</h2>
+  <p>Estado:
+    {% if registration_open %}<span class="badge open">ABIERTA ✅</span>
+      cualquiera entra con su nombre.
+    {% else %}<span class="badge live">CERRADA 🔒</span>
+      solo los ya inscritos pueden entrar.{% endif %}
+  </p>
+  <form method="post" action="{{ url_for('admin_inscripcion') }}">
+    <button class="btn {% if registration_open %}danger{% else %}primary{% endif %}" type="submit">
+      {% if registration_open %}Cerrar inscripción 🔒{% else %}Abrir inscripción ✅{% endif %}
+    </button>
+  </form>
+  <p class="hint">Cierra la inscripción cuando estén TODOS tus jugadores, así nadie se cuela
+     y la lista queda fija.</p>
+</div>
+
+<div class="card">
+  <h2>👥 Jugadores ({{ players|length }})</h2>
+  {% if not players %}<p class="muted">Sin jugadores aún.</p>{% endif %}
+  <div class="player-list">
+    {% for p in players %}
+      <div class="player-chip">
+        <span class="pcolor" style="background: {{ colors[p.id] }}"></span>{{ p.name }}
+        <form method="post" action="{{ url_for('admin_borrar_jugador', pid=p.id) }}"
+              onsubmit="return confirm('¿Borrar a {{ p.name }} y sus apuestas?');" style="display:inline">
+          <button class="btn small danger" type="submit">✕</button>
+        </form>
+      </div>
+    {% endfor %}
+  </div>
+  <p class="hint">Borrar un jugador elimina también sus apuestas.</p>
+</div>
+
+<div class="card">
+  <h2>➕ Agregar partido</h2>
+  <form method="post" action="{{ url_for('admin_crear') }}" class="grid-form">
+    <div><label>Equipo local</label>
+      <input name="home_team" placeholder="Ej: Chile" required></div>
+    <div><label>Equipo visita</label>
+      <input name="away_team" placeholder="Ej: Perú" required></div>
+    <div><label>Día y hora del partido (hora de Chile)</label>
+      <input type="datetime-local" name="kickoff" required></div>
+    <button class="btn primary" type="submit">Agregar ⚽</button>
+  </form>
+  <p class="hint">El "día" del partido se toma de la fecha que pongas aquí.
+     Después de esa hora, nadie puede cambiar su apuesta.</p>
+</div>
+
+<div class="card">
+  <h2>📋 Partidos y resultados</h2>
+  {% if not matches %}
+    <p class="muted">Todavía no has agregado partidos.</p>
+  {% endif %}
+  {% for m in matches %}
+    <div class="admin-match">
+      <div class="admin-match-info">
+        <b>{{ m.home_team }} vs {{ m.away_team }}</b><br>
+        <small class="muted">{{ m.match_date | fecha_larga }} ·
+          {{ m.kickoff.strftime('%H:%M') }}
+          {% if m.kickoff <= now %}· <span class="badge live">cerrado 🔒</span>
+          {% else %}· <span class="badge open">abierto ✏️</span>{% endif %}
+        </small>
+      </div>
+      <form method="post" action="{{ url_for('admin_resultado', mid=m.id) }}"
+            class="inline-form">
+        <input type="number" name="home_score" min="0" max="99" placeholder="–"
+               value="{{ m.home_score if m.home_score is not none else '' }}">
+        <span class="x">-</span>
+        <input type="number" name="away_score" min="0" max="99" placeholder="–"
+               value="{{ m.away_score if m.away_score is not none else '' }}">
+        <button class="btn small" type="submit">Guardar resultado ✅</button>
+      </form>
+      <form method="post" action="{{ url_for('admin_borrar', mid=m.id) }}"
+            onsubmit="return confirm('¿Borrar este partido y sus apuestas?');">
+        <button class="btn small danger" type="submit">🗑️</button>
+      </form>
+      <details class="edit-match">
+        <summary class="btn small">✏️ editar</summary>
+        <form method="post" action="{{ url_for('admin_editar', mid=m.id) }}" class="grid-form">
+          <input name="home_team" value="{{ m.home_team }}" placeholder="Local">
+          <input name="away_team" value="{{ m.away_team }}" placeholder="Visita">
+          <input type="datetime-local" name="kickoff"
+                 value="{{ m.kickoff.strftime('%Y-%m-%dT%H:%M') }}">
+          <button class="btn small" type="submit">Guardar cambios ✏️</button>
+        </form>
+      </details>
+    </div>
+  {% endfor %}
+  <p class="hint">Deja el marcador vacío y guarda para marcar un partido como
+     "todavía no jugado".</p>
+</div>
+{% endblock %}

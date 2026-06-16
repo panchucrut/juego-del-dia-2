@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Organizador · Juego del Día{% endblock %}
+{% block content %}
+<div class="card hero">
+  <h1>🛠️ Organizador</h1>
+  <p class="muted center">Solo el organizador entra aquí para cargar partidos y resultados.</p>
+  <form method="post" class="login-form">
+    <label for="pin">PIN del organizador:</label>
+    <input id="pin" name="pin" type="password" inputmode="numeric"
+           autocomplete="off" required autofocus>
+    <button class="btn primary big" type="submit">Entrar</button>
+  </form>
+</div>
+{% endblock %}

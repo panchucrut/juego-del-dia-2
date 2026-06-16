@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block title %}Reglas · Juego del Día{% endblock %}
+{% block content %}
+
+<div class="card rules">
+  <h1>📖 ¿Cómo se juega? (súper fácil)</h1>
+
+  <p class="big">La idea: cada día hay varios partidos. Tú escribes cuántos goles
+  crees que va a hacer cada equipo. ¡Como adivinar el futuro! 🔮</p>
+
+  <h2>1) Cómo ganas puntos en cada partido</h2>
+  <p>Le achuntas y ganas puntos. ¡Te llevas el premio más alto que logres
+  (no se suman entre sí)!</p>
+  <ul class="points">
+    <li><span class="dot p1">🟢</span> <b>Solo el ganador → 1 punto</b><br>
+      Dijiste que ganaba <i>Chile</i> y ganó <i>Chile</i> (aunque el marcador
+      no sea igual).</li>
+    <li><span class="dot p2">🔵</span> <b>La diferencia de goles → 2 puntos</b><br>
+      Dijiste <b>2-1</b> (gana por 1) y quedó <b>3-2</b> (también gana por 1).
+      ¡Misma diferencia! (Acertar un empate también cuenta acá.)</li>
+    <li><span class="dot p4">🟣</span> <b>El marcador EXACTO → 4 puntos</b><br>
+      Dijiste <b>2-1</b> y quedó exactamente <b>2-1</b>. ¡Crack! 🌟</li>
+  </ul>
+
+  <h2>2) Quién gana el día</h2>
+  <p>Al final del día sumamos tus puntos de <b>todos</b> los partidos. Según en
+  qué lugar quedes, ganas o pierdes puntos del <b>campeonato</b>:</p>
+  <ul class="points">
+    <li>🥇 <b>1.º lugar:</b> +2 puntos</li>
+    <li>🥈 <b>2.º lugar:</b> +1 punto</li>
+    <li>🙂 <b>Los del medio:</b> 0 (ni ganan ni pierden)</li>
+    <li>😬 <b>Penúltimo:</b> −1 punto</li>
+    <li>💀 <b>Último:</b> −2 puntos</li>
+  </ul>
+
+  <h2>3) ¿Y si hay empate?</h2>
+  <p>Se reparten los puntos en partes iguales, ¡justo para todos! 🤝<br>
+  Ejemplo: si <b>dos</b> quedan en 1.º lugar, juntan el +2 y el +1 y lo
+  dividen → <b>+1.5 cada uno</b>.</p>
+
+  <h2>4) Cosas importantes ⭐</h2>
+  <ul class="points">
+    <li>⏰ Puedes cambiar tu marcador las veces que quieras… <b>hasta que el
+      partido empieza</b>. Ahí se cierra con candado 🔒.</li>
+    <li>✍️ Apuesta en <b>todos</b> los partidos. Si dejas uno en blanco,
+      cuenta como <b>0-0</b>.</li>
+    <li>👀 En la pestaña <b>Apuestas</b> ves lo que apostó el resto… pero recién
+      <b>cuando el partido empieza</b> (antes está oculto para que nadie copie).</li>
+    <li>🏆 El <b>campeón</b> es quien junte más puntos sumando todos los días.</li>
+  </ul>
+
+  <h2>🧮 Un ejemplo completo</h2>
+  <p>El partido fue <b>Chile 2 - 1 Perú</b>. Mira qué habría pasado:</p>
+  <table class="rank example">
+    <thead><tr><th>Tu apuesta</th><th>¿Qué pasó?</th><th>Puntos</th></tr></thead>
+    <tbody>
+      <tr><td>2 - 1</td><td>¡Igualito! 🌟</td><td class="num good">4</td></tr>
+      <tr><td>3 - 2</td><td>Misma diferencia (gana por 1)</td><td class="num good">2</td></tr>
+      <tr><td>1 - 0</td><td>Acertaste el ganador</td><td class="num good">1</td></tr>
+      <tr><td>0 - 2</td><td>Dijiste que ganaba Perú 😅</td><td class="num">0</td></tr>
+    </tbody>
+  </table>
+
+  {% if not current_player %}
+    <p class="center"><a class="btn primary big" href="{{ url_for('login') }}">
+      ¡Entendido, quiero jugar! 🎮</a></p>
+  {% endif %}
+</div>
+{% endblock %}

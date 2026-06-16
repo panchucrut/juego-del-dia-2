@@ -1,0 +1,194 @@
+:root{
+  --bg:#0f1226; --bg2:#171a36; --card:#1e2245; --line:#2c3162;
+  --ink:#eef0ff; --muted:#9aa0c7; --pri:#ff5a8a; --pri2:#7c5cff;
+  --good:#34d399; --bad:#fb7185; --warn:#fbbf24;
+  --p1:#34d399; --p2:#38bdf8; --p4:#c084fc;
+}
+*{box-sizing:border-box}
+body{
+  margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+  background:linear-gradient(160deg,#0f1226,#1a1340 60%,#2a1840);
+  color:var(--ink); min-height:100vh;
+}
+a{color:#bdb6ff; text-decoration:none}
+a:hover{text-decoration:underline}
+
+.topbar{
+  display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+  padding:12px 16px; background:rgba(0,0,0,.25); position:sticky; top:0; z-index:5;
+  backdrop-filter:blur(8px);
+}
+.brand{font-weight:800; font-size:1.1rem; color:#fff}
+.topbar nav{display:flex; gap:14px; align-items:center; margin-left:auto; flex-wrap:wrap}
+.whoami{color:var(--muted); font-size:.9rem}
+.ghost{opacity:.8}
+
+.container{max-width:680px; margin:0 auto; padding:16px 14px 90px}
+.center{text-align:center}
+.muted{color:var(--muted)}
+.big{font-size:1.1rem}
+
+.card{
+  background:var(--card); border:1px solid var(--line); border-radius:18px;
+  padding:18px; margin:14px 0; box-shadow:0 8px 30px rgba(0,0,0,.25);
+}
+.hero{text-align:center}
+.hero h1{font-size:2rem; margin:.2em 0}
+
+h1.day-title,h2.day-title{text-align:center; margin:18px 0 6px}
+
+/* Flash */
+.flash{padding:12px 14px; border-radius:12px; margin:10px 0; font-weight:600}
+.flash.ok{background:rgba(52,211,153,.15); border:1px solid var(--good)}
+.flash.error{background:rgba(251,113,133,.15); border:1px solid var(--bad)}
+
+/* Botones */
+.btn{
+  display:inline-block; border:0; border-radius:14px; padding:12px 18px;
+  font-weight:800; font-size:1rem; cursor:pointer; color:#fff;
+  background:var(--line);
+}
+.btn.primary{background:linear-gradient(135deg,var(--pri),var(--pri2))}
+.btn.big{width:100%; padding:16px; font-size:1.1rem; margin-top:10px}
+.btn.small{padding:8px 12px; font-size:.9rem}
+.btn.danger{background:#5a2030}
+.btn:hover{filter:brightness(1.08)}
+
+/* Login / forms */
+.login-form{display:flex; flex-direction:column; gap:10px; margin:16px auto; max-width:360px}
+label{font-weight:600; font-size:.95rem}
+input{
+  font-size:1.05rem; padding:12px; border-radius:12px; border:1px solid var(--line);
+  background:var(--bg2); color:var(--ink); width:100%;
+}
+input:focus{outline:2px solid var(--pri2)}
+
+/* Login: botón por jugador, color distinto cada uno */
+.player-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(130px,1fr)); gap:10px; margin:16px 0}
+.pform{margin:0}
+.player-btn{width:100%; border:0; border-radius:14px; padding:16px 10px; font-weight:800;
+  font-size:1.05rem; color:#fff; cursor:pointer; text-shadow:0 1px 2px rgba(0,0,0,.5);
+  box-shadow:0 4px 14px rgba(0,0,0,.3); transition:transform .08s, filter .08s}
+.player-btn:hover{filter:brightness(1.1); transform:translateY(-2px)}
+.newplayer{margin:10px 0; text-align:center}
+.newplayer summary{cursor:pointer; color:#bdb6ff}
+.pcolor{display:inline-block; width:11px; height:11px; border-radius:50%; margin-right:7px;
+  vertical-align:middle; box-shadow:0 0 0 1px rgba(255,255,255,.2)}
+
+/* Day chips */
+.daybar{display:flex; gap:8px; overflow-x:auto; padding:6px 2px; justify-content:center; flex-wrap:wrap}
+.chip{
+  background:var(--bg2); border:1px solid var(--line); padding:8px 14px;
+  border-radius:999px; font-weight:700; white-space:nowrap; color:var(--ink);
+}
+.chip.active{background:linear-gradient(135deg,var(--pri),var(--pri2)); border-color:transparent; color:#fff}
+.chip.past:not(.active){background:transparent; border-color:var(--line); color:var(--muted); opacity:.5}
+
+/* Match card */
+.match.locked{opacity:.85}
+.match-head{display:flex; justify-content:space-between; align-items:center; margin-bottom:8px}
+.ko{color:var(--muted); font-weight:700}
+.badge{font-size:.78rem; font-weight:800; padding:4px 10px; border-radius:999px}
+.badge.open{background:rgba(52,211,153,.18); color:var(--good)}
+.badge.live{background:rgba(251,191,36,.18); color:var(--warn)}
+.badge.done{background:rgba(124,92,255,.22); color:#c9bdff}
+
+.teams{display:flex; align-items:center; gap:8px; justify-content:space-between}
+.team{flex:1; font-weight:800; font-size:1.05rem}
+.team.home{text-align:right}
+.team.away{text-align:left}
+.score-inputs,.score-show{display:flex; align-items:center; gap:6px; font-weight:900; font-size:1.2rem}
+.score-inputs input{width:56px; text-align:center; font-size:1.3rem; font-weight:900; padding:10px 4px}
+.x{opacity:.6}
+
+.result-line{margin-top:10px; text-align:center; font-size:.95rem}
+.pts{font-weight:900; padding:3px 8px; border-radius:8px}
+.pts.p4{color:#0b0b16; background:var(--p4)}
+.pts.p2{color:#0b0b16; background:var(--p2)}
+.pts.p1{color:#0b0b16; background:var(--p1)}
+.pts.p0{color:var(--muted)}
+.hint{font-size:.85rem; color:var(--muted); margin:8px 0 0}
+.hint.warn{color:var(--warn)}
+
+.sticky-save{position:sticky; bottom:14px}
+
+/* Tables / ranking */
+table.rank{width:100%; border-collapse:collapse}
+table.rank th,table.rank td{padding:10px 8px; border-bottom:1px solid var(--line); text-align:left}
+table.rank th{color:var(--muted); font-size:.8rem; text-transform:uppercase; letter-spacing:.04em}
+table.rank td.pos{width:38px; font-size:1.1rem; text-align:center}
+table.rank td.num{text-align:right; font-weight:800; font-variant-numeric:tabular-nums}
+.num.good{color:var(--good)} .num.bad{color:var(--bad)}
+tr.me{background:rgba(124,92,255,.16)}
+tr.me td{font-weight:800}
+table.example td{font-size:.95rem}
+
+/* Rules */
+.rules h2{margin-top:22px}
+ul.points{list-style:none; padding:0; display:flex; flex-direction:column; gap:12px}
+ul.points li{background:var(--bg2); border:1px solid var(--line); border-radius:12px; padding:12px}
+.dot{font-size:1.1rem; margin-right:4px}
+
+/* Admin */
+.grid-form{display:grid; gap:10px}
+.admin-match{
+  display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+  border-bottom:1px solid var(--line); padding:12px 0;
+}
+.admin-match-info{flex:1; min-width:160px}
+.inline-form{display:flex; align-items:center; gap:6px}
+.inline-form input{width:54px; text-align:center}
+.player-list{display:flex; flex-wrap:wrap; gap:8px}
+.player-chip{display:flex; align-items:center; gap:6px; background:var(--bg2);
+  border:1px solid var(--line); border-radius:999px; padding:6px 8px 6px 12px; font-weight:700}
+.player-chip .btn.small{padding:2px 9px; line-height:1}
+.edit-match{width:100%; margin-top:6px}
+.edit-match summary{display:inline-block; list-style:none; cursor:pointer}
+.edit-match summary::-webkit-details-marker{display:none}
+.edit-match .grid-form{margin-top:8px; grid-template-columns:1fr 1fr; gap:8px}
+.edit-match .grid-form input[type=datetime-local],
+.edit-match .grid-form button{grid-column:1 / -1}
+
+/* Grid apuestas de todos */
+.table-scroll{overflow-x:auto; -webkit-overflow-scrolling:touch}
+table.grid{min-width:max-content}
+table.grid th{font-size:.72rem; text-align:center; vertical-align:bottom; min-width:58px; line-height:1.2}
+table.grid td{text-align:center; white-space:nowrap}
+.sticky-col{position:sticky; left:0; background:var(--card); text-align:left !important; z-index:1; box-shadow:1px 0 0 var(--line)}
+tr.me .sticky-col{background:#2a2a5a}
+.pts-mini{font-weight:900; padding:1px 6px; border-radius:6px; font-size:.72rem}
+.pts-mini.p4{background:var(--p4); color:#0b0b16}
+.pts-mini.p2{background:var(--p2); color:#0b0b16}
+.pts-mini.p1{background:var(--p1); color:#0b0b16}
+.pts-mini.p0{color:var(--muted)}
+
+/* Grupos: apuesta vs realidad */
+.group-card{padding:14px}
+.group-title{text-align:center; margin:2px 0 10px}
+.group-cols{display:flex; gap:12px; align-items:flex-start}
+.gcol{flex:1; min-width:0}
+.gcol-h{text-align:center; font-weight:800; padding:6px 4px; border-radius:9px;
+  margin-bottom:6px; font-size:.85rem}
+.gcol-h.pred{background:rgba(124,92,255,.25); color:#cdbcff}
+.gcol-h.real{background:rgba(52,211,153,.2); color:#9af0cf}
+table.gtable{width:100%; border-collapse:collapse; font-size:.85rem}
+table.gtable th{font-size:.62rem; color:var(--muted); padding:2px 1px; text-transform:uppercase}
+table.gtable td{padding:6px 2px; border-bottom:1px solid var(--line)}
+.gtable .pos{width:16px; text-align:center; color:var(--muted)}
+.gt-team{font-weight:700; width:99%}
+.gt-team span{display:block; max-width:150px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+.gtable .num{text-align:right; width:26px; font-variant-numeric:tabular-nums; white-space:nowrap}
+.gtable th:nth-child(2){text-align:left}
+.gtable .pts-col{font-weight:900}
+tr.adv .gt-team{color:#34d399}
+tr.adv .pos{color:#34d399; font-weight:800}
+@media (max-width:520px){
+  .group-cols{gap:7px}
+  table.gtable{font-size:.74rem}
+  table.gtable td{padding:5px 1px}
+  .gtable .num{width:22px}
+  .gt-team span{max-width:74px}
+}
+
+.foot{text-align:center; padding:20px; color:var(--muted); font-size:.85rem}
+.foot a.muted{opacity:.5}

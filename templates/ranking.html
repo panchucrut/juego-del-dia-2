@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block title %}Ranking · Juego del Día{% endblock %}
+{% block head %}<meta http-equiv="refresh" content="60">{% endblock %}
+{% block content %}
+
+<h1 class="day-title">🏆 Campeonato general</h1>
+<p class="muted center">El campeón es quien junte más puntos sumando todos los días.</p>
+
+<div class="card">
+  <table class="rank">
+    <thead><tr><th>#</th><th>Jugador</th><th>Puntos</th><th>Aciertos</th></tr></thead>
+    <tbody>
+      {% for r in gen %}
+        <tr class="{% if r.me %}me{% endif %}">
+          <td class="pos">
+            {% if loop.index == 1 %}🥇{% elif loop.index == 2 %}🥈
+            {% elif loop.index == 3 %}🥉{% else %}{{ loop.index }}{% endif %}
+          </td>
+          <td><span class="pcolor" style="background: {{ r.color }}"></span>{{ r.name }}{% if r.me %} <small>(tú)</small>{% endif %}</td>
+          <td class="num {% if r.award > 0 %}good{% elif r.award < 0 %}bad{% endif %}">
+            {{ '%+g' % r.award }}
+          </td>
+          <td class="num muted">{{ r.bet }}</td>
+        </tr>
+      {% else %}
+        <tr><td colspan="4" class="muted center">Aún no hay resultados.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<h2 class="day-title">📅 Ranking del día</h2>
+<div class="daybar">
+  {% for f in fechas %}
+    <a class="chip {% if f == fecha %}active{% endif %}{% if f < hoy %} past{% endif %}"
+       href="{{ url_for('ranking', fecha=f.isoformat()) }}">{{ f.day }}/{{ f.month }}</a>
+  {% endfor %}
+</div>
+
+{% if fecha %}
+  <p class="center">
+    <b>{{ fecha | fecha_larga }}</b>
+    {% if day_complete %}<span class="badge done">Día terminado ✅</span>
+    {% else %}<span class="badge live">En vivo 🔴</span>{% endif %}
+  </p>
+  <div class="card">
+    <table class="rank">
+      <thead><tr><th>#</th><th>Jugador</th><th>Aciertos</th><th>Premio</th></tr></thead>
+      <tbody>
+        {% for r in day_rows %}
+          <tr class="{% if r.me %}me{% endif %}">
+            <td class="pos">
+              {% if loop.index == 1 %}🥇{% elif loop.index == 2 %}🥈{% else %}{{ loop.index }}{% endif %}
+            </td>
+            <td><span class="pcolor" style="background: {{ r.color }}"></span>{{ r.name }}{% if r.me %} <small>(tú)</small>{% endif %}</td>
+            <td class="num">{{ r.score }}</td>
+            <td class="num {% if r.award > 0 %}good{% elif r.award < 0 %}bad{% endif %}">
+              {{ '%+g' % r.award }}
+            </td>
+          </tr>
+        {% else %}
+          <tr><td colspan="4" class="muted center">Nadie ha apostado este día todavía.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <p class="muted center">«Aciertos» = puntos por adivinar marcadores ·
+     «Premio» = puntos de campeonato de ese día.</p>
+{% endif %}
+{% endblock %}
