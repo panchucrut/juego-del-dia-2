@@ -671,6 +671,15 @@ def api_actualizar():
     return jsonify(ok=True, cargados=loaded, pendientes=missed)
 
 
+@app.route("/cron")
+def cron():
+    """Endpoint para un pinger externo (UptimeRobot): mantiene la app despierta
+       y carga resultados finales desde ESPN. Solo consulta ESPN si hay partidos
+       terminados sin resultado (si no, responde al instante)."""
+    loaded, missed = autoload_results()
+    return jsonify(ok=True, cargados=loaded, pendientes=missed)
+
+
 # ----------------------------------------------------------------------------
 # Rutas: organizador (admin)
 # ----------------------------------------------------------------------------
