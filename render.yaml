@@ -13,10 +13,4 @@ services:
       - key: ADMIN_PIN
         sync: false
       - key: DATABASE_URL
-        fromDatabase:
-          name: juego2-db
-          property: connectionString
-
-databases:
-  - name: juego2-db
-    plan: free
+        sync: false
